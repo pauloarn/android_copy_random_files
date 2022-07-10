@@ -3,10 +3,10 @@ import { AdbClient } from 'adb-ts';
 require('dotenv/config');
 
 const env = process.env
-const caminhoOrigem = env.ORIGIN
-const caminhoDestino = env.DESTINY
+const originPath = env.ORIGIN
+const destinyPath = env.DESTINY
 const adb = new AdbClient();
-const numeroDeArquivos = 14
+const numberOfFiles = 14
 
 
 //Functiont o get the Id of the first device found
@@ -29,8 +29,8 @@ const uploadFile = async (deviceId: string, originPath: string, destinyPah: stri
     }
 }
 
-const montaListaDeArquivos = (numberOfFiles: number) =>{
-    const arquivos = readdirSync(caminhoOrigem as PathLike)
+const mountFileList = (numberOfFiles: number) =>{
+    const arquivos = readdirSync(originPath as PathLike)
     const arquivosSelecionados: string[] = []
     for (let index = 0; index < numberOfFiles; index++) {
         const selectedFile = arquivos[randomIntFromInterval(0, arquivos.length)]
@@ -45,21 +45,21 @@ const montaListaDeArquivos = (numberOfFiles: number) =>{
 }
 
 const main = async () =>{
-    if(caminhoOrigem && caminhoDestino) {
-        const listaDeArquivos = montaListaDeArquivos(numeroDeArquivos);
-        const idDispositivo = await getDeviceId();
-        console.log('Arquivos Selecionados', listaDeArquivos)
-        for (const nomeArquivo of listaDeArquivos) {
+    if(originPath && destinyPath) {
+        const fileList = mountFileList(numberOfFiles);
+        const deviceId = await getDeviceId();
+        console.log('Arquivos Selecionados', fileList)
+        for (const nomeArquivo of fileList) {
             try {
-                await uploadFile(idDispositivo, `${caminhoOrigem}${nomeArquivo}`, `${caminhoDestino}${nomeArquivo}`)
-                console.log(`Arquivo ${nomeArquivo} finalizado`)
+                await uploadFile(deviceId, `${originPath}${nomeArquivo}`, `${destinyPath}${nomeArquivo}`)
+                console.log(`File ${nomeArquivo} done!`)
             } catch (e) {
-                console.log(`Falha ao transferir arquivo ${nomeArquivo}`)
+                console.log(`Fail to transfer file ${nomeArquivo}!`)
             }
         }
-        console.log('Transferencia Finalizada')
+        console.log('All done!')
     }else{
-        console.log('Variaveis de ambiente não definidas')
+        console.log('.env vars not defined')
     }
 }
 
