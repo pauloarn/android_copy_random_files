@@ -127,3 +127,6 @@ dist
 .pnp.*
 
 ./.idea
+.iws
+workspace.xml
+tasks.xml
