@@ -30,31 +30,31 @@ const uploadFile = async (deviceId: string, originPath: string, destinyPah: stri
 }
 
 const mountFileList = (numberOfFiles: number) =>{
-    const arquivos = readdirSync(originPath as PathLike)
-    const arquivosSelecionados: string[] = []
+    const files = readdirSync(originPath as PathLike)
+    const selectedFiles: string[] = []
     for (let index = 0; index < numberOfFiles; index++) {
-        const selectedFile = arquivos[randomIntFromInterval(0, arquivos.length)]
-        if(arquivosSelecionados.includes(selectedFile)){
-            arquivosSelecionados.push(arquivos[randomIntFromInterval(0, arquivos.length)])
+        const selectedFile = files[randomIntFromInterval(0, files.length)]
+        if(selectedFiles.includes(selectedFile)){
+            selectedFiles.push(files[randomIntFromInterval(0, files.length)])
         }
         else{
-            arquivosSelecionados.push(selectedFile)
+            selectedFiles.push(selectedFile)
         }
     }
-    return arquivosSelecionados
+    return selectedFiles
 }
 
 const main = async () =>{
     if(originPath && destinyPath) {
         const fileList = mountFileList(numberOfFiles);
         const deviceId = await getDeviceId();
-        console.log('Arquivos Selecionados', fileList)
-        for (const nomeArquivo of fileList) {
+        console.log('Selected files', fileList)
+        for (const fileName of fileList) {
             try {
-                await uploadFile(deviceId, `${originPath}${nomeArquivo}`, `${destinyPath}${nomeArquivo}`)
-                console.log(`File ${nomeArquivo} done!`)
+                await uploadFile(deviceId, `${originPath}${fileName}`, `${destinyPath}${fileName}`)
+                console.log(`File ${fileName} done!`)
             } catch (e) {
-                console.log(`Fail to transfer file ${nomeArquivo}!`)
+                console.log(`Fail to transfer file ${fileName}!`)
             }
         }
         console.log('All done!')
