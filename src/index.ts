@@ -6,7 +6,7 @@ const env = process.env
 const originPath = env.ORIGIN
 const destinyPath = env.DESTINY
 const adb = new AdbClient();
-const numberOfFiles = 14
+const numberOfFiles = 70
 
 
 //Functiont o get the Id of the first device found
@@ -29,6 +29,7 @@ const uploadFile = async (deviceId: string, originPath: string, destinyPah: stri
     }
 }
 
+//Function to mount the file list based on the amount of files provided and the list of files on folder
 const mountFileList = (numberOfFiles: number) =>{
     const files = readdirSync(originPath as PathLike)
     const selectedFiles: string[] = []
